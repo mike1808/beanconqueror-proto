@@ -1,0 +1,110 @@
+syntax = "proto3";
+package beanconqueror;
+
+message Bean {
+  string name = 1;
+  string buyDate = 2;
+  string roastingDate = 3;
+  string note = 4;
+
+  string roaster = 5;
+  Config config = 6;
+  Roast roast = 7;
+  uint64 roast_range = 8;
+  BeanMix beanMix = 9;
+
+  string roast_custom = 10;
+  string aromatics = 11;
+  uint64 weight = 12;
+  bool finished = 13;
+  uint64 coast = 14;
+  repeated string attachments = 15;
+  string cupping_points = 16;
+  bool decaffeinated = 17;
+  string url = 18;
+  string bean_article_number = 19;
+
+  uint32 rating = 20;
+
+  repeated BeanInformation bean_information = 21;
+
+  BeanRoastingType bean_roasting_type = 22;
+  BeanRoastInformation bean_roast_information = 23;
+
+  string qr_code = 24;
+
+  bool favourite = 25;
+  bool shared = 26;
+}
+
+message Config {
+  string uuid = 1;
+  uint64 unix_timestamp = 2;
+}
+
+message BeanInformation {
+  string country = 1;
+  string region = 2;
+  string farm = 3;
+  string farmer = 4;
+  string elevation = 5;
+  string harvest_time = 6;
+  string variety = 7;
+  string processing = 8;
+  string certification = 9;
+  uint32 percentage = 10;
+  uint32 purchasing_price = 11;
+  uint32 fob_price = 12;
+}
+
+message BeanRoastInformation {
+  uint32 drop_temperature = 1;
+  uint64 roast_length = 2;
+  string roaster_machine = 3;
+  uint64 green_bean_weight = 4;
+  uint32 outside_temperature = 5;
+  uint32 humidity = 6;
+  string bean_uuid = 7;
+
+  uint32 first_crack_minute = 8;
+  uint32 first_crack_temperature = 9;
+  uint32 second_crack_minute = 10;
+  uint32 second_crack_temperature = 11;
+}
+
+enum Roast {
+  // UNKOWN
+  UNKNOWN_ROAST = 0;
+  // LIGHT
+  CINNAMON_ROAST = 1;
+  AMERICAN_ROAST = 2;
+  NEW_ENGLAND_ROAST = 3;
+  HALF_CITY_ROAST = 4;
+  MODERATE_LIGHT_ROAST = 5;
+
+  // MEDIUM
+  CITY_ROAST = 6;
+  CITY_PLUS_ROAST = 7;
+  FULL_CITY_ROAST = 8;
+
+  // DARK
+  FULL_CITY_PLUS_ROAST = 9;
+  ITALIAN_ROAST = 10;
+  VIEANNA_ROAST = 11;
+  FRENCH_ROAST = 12;
+
+  CUSTOM_ROAST = 13;
+}
+
+enum BeanMix {
+  UNKNOWN_BEAN_MIX = 0;
+  SINGLE_ORIGIN = 1;
+  BLEND = 2;
+}
+
+enum BeanRoastingType {
+  UNKNOWN_BEAN_ROASTING_TYPE = 0;
+  FILTER = 1;
+  ESPRESSO = 2;
+  OMNI = 3;
+}
