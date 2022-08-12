@@ -1,8 +1,30 @@
 // import { Reader } from "protobufjs";
 import { Bean } from './generated/bean'
 
+function encode(bean: Bean) {
+    const bytes = Bean.encode(bean).finish()
+
+    const decoder = new TextDecoder('utf-8')
+    const b64encoded = btoa(decoder.decode(bytes))
+
+    const url = new URL('https://beanconqueror.com')
+    url.searchParams.set("bean", b64encoded)
+
+    return url.toString()
+}
+
+function decode(str: string) {
+    const url = new URL(str);
+    const b64 = url.searchParams.get("bean")
+    const encoder = new TextEncoder()
+    const encoded = encoder.encode(atob(b64!))
+
+    const bean = Bean.decode(encoded)
+    return bean
+}
+
 function example() {
-    const bytes = Bean.encode({
+    const encoded = encode({
         name: "my beans",
         buyDate: "08/12/2022",
         roastingDate: "08/02/2022",
@@ -32,15 +54,13 @@ function example() {
         qrCode: "",
         favourite: false,
         shared: false,
-    }).finish()
+    })
 
-    const decoder = new TextDecoder('utf-8')
-    const b64encoded = btoa(decoder.decode(bytes))
+    console.log('encoded to', encoded)
 
-    const url = new URL('https://beanconqueror.com')
-    url.searchParams.set("bean", b64encoded)
+    const bean = decode(encoded)
 
-    console.log(url.toString())
+    console.log("decoded to", bean)
 }
 
 example()
