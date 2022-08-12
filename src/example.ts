@@ -1,5 +1,8 @@
 // import { Reader } from "protobufjs";
 import { Bean } from './generated/bean'
+import LZString from 'lz-string'
+// @ts-ignore
+const JSURL = require('jsurl')
 
 function encode(bean: Bean) {
     const bytes = Bean.encode(bean).finish()
@@ -23,8 +26,30 @@ function decode(str: string) {
     return bean
 }
 
+function currentEncode(_bean: Bean) {
+    const stringifyBean = JSURL.stringify(_bean);
+    const compressedBean = LZString.compressToEncodedURIComponent(stringifyBean);
+
+
+    const loops = Math.ceil(compressedBean.length / 400);
+
+    let jsonParams = '';
+    for (let i = 0; i < loops; i++) {
+        if (jsonParams === '') {
+            jsonParams = 'shareUserBean' + i + '=' + compressedBean.substr(0, 400);
+        } else {
+            jsonParams += '&shareUserBean' + i + '=' + compressedBean.substr(i * 400, 400);
+        }
+    }
+
+
+    const beanMessage: string = 'https://beanconqueror.com?' + jsonParams;
+    return beanMessage
+}
+
+
 function example() {
-    const encoded = encode({
+    const bean = {
         name: "my beans",
         buyDate: "08/12/2022",
         roastingDate: "08/02/2022",
@@ -54,13 +79,15 @@ function example() {
         qrCode: "",
         favourite: false,
         shared: false,
-    })
+    }
+    const encoded = encode(bean)
 
-    console.log('encoded to', encoded)
+    console.log('encoded with protobuf to', encoded)
+    console.log('encoded with the current code', currentEncode(bean))
 
-    const bean = decode(encoded)
+    const decodedBean = decode(encoded)
 
-    console.log("decoded to", bean)
+    console.log("decoded to", decodedBean)
 }
 
 example()
