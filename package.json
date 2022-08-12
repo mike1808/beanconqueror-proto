@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_out ./src/generated ./src/bean.proto"
+    "generate": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_out ./src/generated ./src/bean.proto",
+    "start": "ts-node src/example.ts"
   },
   "keywords": [],
   "author": "",
